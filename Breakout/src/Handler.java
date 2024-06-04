@@ -6,12 +6,18 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 public class Handler implements KeyboardHandler {
 
     public Keyboard keyboard;
-    public Player player;
+    public Bar bar;
+    public Ball ball;
+    public int fieldX;
+    public int fieldY;
 
 
-    public Handler(Player player) {
-        this.player = player;
+    public Handler(Bar bar, int fieldX, int fieldY, Ball ball) {
+        this.bar = bar;
         keyboard = new Keyboard(this);
+        this.fieldX = fieldX;
+        this.fieldY = fieldY;
+        this.ball = ball;
         createKeyboardEvents();
     }
 
@@ -38,11 +44,15 @@ public class Handler implements KeyboardHandler {
 
         switch (keyboardEvent.getKey()) {
             case KeyboardEvent.KEY_RIGHT:
-                player.moveRight();
+                if(FieldPosition.isValidPosition(Direction.RIGHT, bar.getPosition())) {
+                    bar.moveRight();
+                }
                 break;
 
                 case KeyboardEvent.KEY_LEFT:
-                    player.moveLeft();
+                    if(FieldPosition.isValidPosition(Direction.LEFT, bar.getPosition())) {
+                        bar.moveLeft();
+                    }
                     break;
 
                     case KeyboardEvent.KEY_SPACE:
