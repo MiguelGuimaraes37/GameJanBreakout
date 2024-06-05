@@ -9,34 +9,38 @@ public class FieldPosition {
 
         switch (d) {
             case RIGHT:
-                if(p1.getX()+10 > 730) {
+                if (p1.getX() + 10 > 840) {
                     return false;
                 }
                 break;
             case LEFT:
-                if(p1.getX()-10 < -90) {
+                if (p1.getX() - 10 < 20) {
+                    return false;
+                }
+                break;
+            case UP:
+                if (p1.getY() - 10 < 10) {
                     return false;
                 }
                 break;
         }
 
+        System.out.println("True");
         return true;
     }
 
-    public static void moveBall(Ball ball) {
-        Direction direction;
-        Position position = ball.getPosition();
+    public static void moveBall(Ball ball) throws InterruptedException {
 
 
-        direction = randomDirection(ball);
+        if(ball.isFirstMove()) {
 
-
-
-        switch (direction) {
-            case UP:
+            while(isValidPosition(Direction.UP, ball.getPosition())) {
+                System.out.println("Test");
                 ball.moveUp();
-        }
+            }
 
+            ball.setFirstMove(false);
+        }
 
     }
 
@@ -56,9 +60,9 @@ public class FieldPosition {
                 case 1:
                     return Direction.UP;
                 case 2:
-                    return Direction.DIAGONAL_LEFT;
+                    return Direction.DIAGONAL_UP_LEFT;
                 case 3:
-                    return Direction.DIAGONAL_RIGHT;
+                    return Direction.DIAGONAL_UP_RIGHT;
             }
         }
 

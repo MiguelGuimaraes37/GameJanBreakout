@@ -1,4 +1,7 @@
+import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Ellipse;
+
+import java.util.concurrent.Delayed;
 
 public class Ball {
     private Ellipse ball;
@@ -36,13 +39,13 @@ public class Ball {
     }
 
     public void moveUp() {
-        position.setX(position.getX()+10);
-        ball.translate(0, 50);
+        position.decreaseY(10);
+        ball.translate(0, -10);
     }
 
     public void moveDown() {
-        position.setX(position.getX()-10);
-        ball.translate(0, -10);
+        position.increaseY(10);
+        ball.translate(0, ball.getY());
     }
 
     public void setFirstMove(boolean firstMove) {
@@ -51,5 +54,9 @@ public class Ball {
 
     public boolean isFirstMove() {
         return firstMove;
+    }
+
+    public void setColor(Color color) {
+        ball.setColor(color);
     }
 }

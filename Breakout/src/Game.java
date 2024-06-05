@@ -5,40 +5,48 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    private Rectangle field;
-    private Picture picture;
+    private Brick[] bricks;
+    private Picture background;
     private Bar bar;
 
     private Ball ball;
 
 
-
-    public Game() {
-        field = new Rectangle(10, 10, 962, 819);
-        picture = new Picture(10, 10, "resources/gameImage.png");
+// 440 x
+    public Game() throws InterruptedException {
+        background = new Picture(10, 10, "resources/gameImage.png");
         bar = new Bar(new Rectangle(410, 800, 125, 20), new Position(410,800));
-        ball = new Ball(new Ellipse(440, 790, 35, 35), new Position(440,790));
+        ball = new Ball(new Ellipse(440, 790, 35, 35), new Position(440,700));
+
+        prepare();
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
+        boolean gameEnd = false;
 
-          prepare();
+
+        while (!gameEnd) {
+            FieldPosition.moveBall(ball);
+
+            Thread.sleep(2000);
+        }
 
     }
 
-    public void prepare() {
+    public void prepare() throws InterruptedException {
 
-        field.draw();
+        background.draw();
 
-        picture.draw();
+        bricks = BrickFactory.createBricks();
 
+        ball.setColor(new Color(255,255,255));
         ball.fill();
 
         bar.setColor(new Color(255, 255, 255));
         bar.fill();
-        new Handler(bar, field.getWidth(), field.getHeight(), ball);
 
-        FieldPosition.moveBall(ball);
+        new Handler(bar, background.getWidth(), background.getHeight(), ball);
+
     }
 
 }
