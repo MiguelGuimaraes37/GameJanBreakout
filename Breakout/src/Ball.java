@@ -11,7 +11,6 @@ public class Ball {
 
     public Ball(Ellipse ellipse, Position position) {
         this.ellipse = ellipse;
-        this.position=position;
         this.lastDirection = Direction.UP;
         this.firstMove=true;
         this.position = new Position(ellipse.getX(),ellipse.getY());
@@ -42,20 +41,15 @@ public class Ball {
         ellipse.translate(0, -10);
     }
 
-    public void moveDown() {
-        position.increaseY(10);
-        ellipse.translate(0, 10);
-    }
-
     public void moveDiagonalDownLeft() {
-        position.decreaseY(10);
+        position.increaseY(10);
         position.decreaseX(10);
         ellipse.translate(-10,10);
     }
 
     public void moveDiagonalDownRight() {
-        position.decreaseY(10);
-        position.decreaseX(10);
+        position.increaseY(10);
+        position.increaseX(10);
         ellipse.translate(10,10);
     }
 

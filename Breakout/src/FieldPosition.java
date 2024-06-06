@@ -29,26 +29,55 @@ public class FieldPosition {
         return true;
     }
 
-    public static void moveBall(Ball ball, Brick[] bricks, Direction currentDirection) throws InterruptedException {
+    public static void moveBall(Ball ball, Brick[] bricks, int i) throws InterruptedException {
 
-        while (isValidPosition(currentDirection, ball.getPosition()) && !hitBrick(ball, bricks)) {
+
+        while (isValidPosition(getDirection(i), ball.getPosition()) && !hitBrick(ball, bricks)) {
 
             Thread.sleep(55);
 
-            if(currentDirection == Direction.UP) {
-                ball.moveUp();
-            } else if(currentDirection == Direction.DIAGONAL_DOWN_RIGHT) {
-                ball.moveDiagonalDownRight();
-            } else if (currentDirection == Direction.DIAGONAL_DOWN_LEFT) {
-                ball.moveDiagonalDownLeft();
-            } else if(currentDirection == Direction.DIAGONAL_UP_LEFT) {
-                ball.moveDiagonalUpLeft();
-            } else if(currentDirection == Direction.DIAGONAL_UP_RIGHT) {
-                ball.moveDiagonalUpRight();
+            System.out.println(i);
+
+            switch (getDirection(i)) {
+                case UP:
+                    ball.moveUp();
+                    break;
+                case DIAGONAL_DOWN_RIGHT:
+                    System.out.println("DIAGONAL DOWN RIGHT");
+                    ball.moveDiagonalDownRight();
+                    break;
+                case DIAGONAL_DOWN_LEFT:
+                    ball.moveDiagonalDownLeft();
+                    break;
+                case DIAGONAL_UP_LEFT:
+                    ball.moveDiagonalUpLeft();
+                    break;
+                case DIAGONAL_UP_RIGHT:
+                    ball.moveDiagonalUpRight();
+                    break;
             }
+
+
 
         }
 
+    }
+
+    public static Direction getDirection(int i) {
+
+        switch (i) {
+            case 0:
+                return Direction.UP;
+            case 1:
+                System.out.println("Sout test");
+                return Direction.DIAGONAL_DOWN_RIGHT;
+            case 2:
+                return Direction.DIAGONAL_DOWN_LEFT;
+            case 3:
+                return Direction.DIAGONAL_UP_LEFT;
+            default:
+                return Direction.DIAGONAL_UP_RIGHT;
+        }
     }
 
     private static boolean hitBrick(Ball ball, Brick[] bricks) {
@@ -58,7 +87,7 @@ public class FieldPosition {
         for(int i = 0; i < bricks.length; i++) {
 
             if(bricks[i] == null) {
-                System.out.println("aaa");
+                continue;
             }
 
             if (ballPosition.getY()-60 == bricks[i].getPosition().getY()) {

@@ -6,13 +6,10 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    private static Direction[] directions = new Direction[]{};
-    private static Direction[] directionsReverse = new Direction[]{};
-
+    private String[] directions;
     private Brick[] bricks;
     private Picture background;
     private Bar bar;
-
     private Ball ball;
 
 
@@ -27,37 +24,32 @@ public class Game {
         prepare();
 
         boolean gameEnd = false;
+        int counter = 0;
 
         while (!gameEnd) {
 
-            for(int i = 0 ; i < bricks.length; i++) {
-                if(i == 4) {
-                    i = 0;
+            FieldPosition.moveBall(ball, bricks, counter);
+
+            counter++;
+
+                if(counter == 4) {
+                    counter=0;
                 }
 
-                FieldPosition.moveBall(ball, bricks, Direction.values()[i]);
             }
-
-
 
         }
 
-    }
+
+
+
 
     public void prepare() throws InterruptedException {
-
-        directions = new Direction[]{Direction.DIAGONAL_DOWN_RIGHT, Direction.DIAGONAL_DOWN_LEFT
-                ,Direction.DIAGONAL_UP_LEFT,Direction.DIAGONAL_UP_RIGHT};
-        directionsReverse = new Direction[]{Direction.DIAGONAL_DOWN_LEFT, Direction.DIAGONAL_DOWN_RIGHT
-                ,Direction.DIAGONAL_UP_RIGHT, Direction.DIAGONAL_UP_RIGHT};
-
-
         background.draw();
 
         BrickFactory factory = new BrickFactory();
 
         bricks = factory.createBricks();
-
 
         ball.setColor(new Color(255,255,255));
         ball.fill();
