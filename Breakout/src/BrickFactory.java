@@ -3,9 +3,9 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public class BrickFactory {
 
-    public static Brick[] createBricks() {
+    public Brick[] createBricks() {
 
-        Brick[] bricksInput = new Brick[28];
+        Brick[] bricksInput = new Brick[21];
 
         int xInitialValue = 40;
         int yInitialValue = 50;
@@ -19,13 +19,13 @@ public class BrickFactory {
 
         Rectangle initialRectangle = new Rectangle(x,y,125,60);
 
-        for(int i = 0; i < 28; i++) {
+        for(int i = 0; i < 21; i++) {
 
             if(i == 0) {
                 Brick b1 = new Brick(initialPosition, initialRectangle);
-                b1.getGrid().draw();
-                b1.getGrid().fill();
-                b1.getGrid().setColor(color);
+                b1.getRectangle().draw();
+                b1.getRectangle().fill();
+                b1.getRectangle().setColor(color);
                 bricksInput[i] = b1;
                 continue;
             }
@@ -38,19 +38,14 @@ public class BrickFactory {
                 x=xInitialValue;
                 y+=65;
                 color = new Color(255,0,0);
-            } else if(i == 21) {
-                x=xInitialValue;
-                y+=65;
-                color = new Color(255,255,0);
-            }
-            else {
+            } else {
                 x+=130;
             }
 
             Brick b2 = new Brick(new Position(x, y), new Rectangle(x, y, 125, 60));
-            b2.getGrid().setColor(color);
-            b2.getGrid().draw();
-            b2.getGrid().fill();
+            b2.getRectangle().setColor(color);
+            b2.getRectangle().draw();
+            b2.getRectangle().fill();
             bricksInput[i] = b2;
 
         }

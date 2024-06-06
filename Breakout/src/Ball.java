@@ -1,25 +1,24 @@
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Ellipse;
 
-import java.util.concurrent.Delayed;
-
 public class Ball {
-    private Ellipse ball;
+    private Ellipse ellipse;
     private Position position;
-
+    private Direction nextDirection;
     private Direction lastDirection;
     private boolean firstMove;
 
 
-    public Ball(Ellipse ball, Position position) {
-        this.ball = ball;
+    public Ball(Ellipse ellipse, Position position) {
+        this.ellipse = ellipse;
         this.position=position;
-        this.lastDirection = FieldPosition.randomDirection(this);
+        this.lastDirection = Direction.UP;
         this.firstMove=true;
+        this.position = new Position(ellipse.getX(),ellipse.getY());
     }
 
     public Ellipse getEllipse() {
-        return ball;
+        return ellipse;
     }
 
     public Position getPosition() {
@@ -30,22 +29,62 @@ public class Ball {
         this.position = position;
     }
 
-    public void setBall(Ellipse ball) {
-        this.ball = ball;
+    public void setEllipse(Ellipse ellipse) {
+        this.ellipse = ellipse;
     }
 
     public void fill() {
-        ball.fill();
+        ellipse.fill();
     }
 
     public void moveUp() {
         position.decreaseY(10);
-        ball.translate(0, -10);
+        ellipse.translate(0, -10);
     }
 
     public void moveDown() {
         position.increaseY(10);
-        ball.translate(0, ball.getY());
+        ellipse.translate(0, 10);
+    }
+
+    public void moveDiagonalDownLeft() {
+        position.decreaseY(10);
+        position.decreaseX(10);
+        ellipse.translate(-10,10);
+    }
+
+    public void moveDiagonalDownRight() {
+        position.decreaseY(10);
+        position.decreaseX(10);
+        ellipse.translate(10,10);
+    }
+
+    public void moveDiagonalUpRight() {
+        position.decreaseY(10);
+        position.increaseX(10);
+        ellipse.translate(10,-10);
+    }
+
+    public void moveDiagonalUpLeft() {
+        position.decreaseY(10);
+        position.decreaseX(10);
+        ellipse.translate(-10,-10);
+    }
+
+    public void setNextDirection(Direction nextDirection) {
+        this.nextDirection = nextDirection;
+    }
+
+    public void setLastDirection(Direction lastDirection) {
+        this.lastDirection = lastDirection;
+    }
+
+    public Direction getLastDirection() {
+        return lastDirection;
+    }
+
+    public Direction getNextDirection() {
+        return nextDirection;
     }
 
     public void setFirstMove(boolean firstMove) {
@@ -57,6 +96,6 @@ public class Ball {
     }
 
     public void setColor(Color color) {
-        ball.setColor(color);
+        ellipse.setColor(color);
     }
 }

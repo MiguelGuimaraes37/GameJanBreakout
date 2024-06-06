@@ -3,10 +3,6 @@ public class FieldPosition {
 
     public static boolean isValidPosition(Direction d, Position p1) {
 
-        System.out.println("Position X " + p1.getX());
-        System.out.println("Position Y " + p1.getY());
-
-
         switch (d) {
             case RIGHT:
                 if (p1.getX() + 10 > 840) {
@@ -19,54 +15,63 @@ public class FieldPosition {
                 }
                 break;
             case UP:
-                if (p1.getY() - 10 < 10) {
+                if (p1.getY() - 10 < -50) {
+                    return false;
+                }
+                break;
+            case DIAGONAL_DOWN_RIGHT:
+                if(p1.getX() - 10 < -50) {
                     return false;
                 }
                 break;
         }
 
-        System.out.println("True");
         return true;
     }
 
-    public static void moveBall(Ball ball) throws InterruptedException {
+    public static void moveBall(Ball ball, Brick[] bricks, Direction currentDirection) throws InterruptedException {
 
+        while (isValidPosition(currentDirection, ball.getPosition()) && !hitBrick(ball, bricks)) {
 
-        if(ball.isFirstMove()) {
+            Thread.sleep(55);
 
-            while(isValidPosition(Direction.UP, ball.getPosition())) {
-                System.out.println("Test");
+            if(currentDirection == Direction.UP) {
                 ball.moveUp();
+            } else if(currentDirection == Direction.DIAGONAL_DOWN_RIGHT) {
+                ball.moveDiagonalDownRight();
+            } else if (currentDirection == Direction.DIAGONAL_DOWN_LEFT) {
+                ball.moveDiagonalDownLeft();
+            } else if(currentDirection == Direction.DIAGONAL_UP_LEFT) {
+                ball.moveDiagonalUpLeft();
+            } else if(currentDirection == Direction.DIAGONAL_UP_RIGHT) {
+                ball.moveDiagonalUpRight();
             }
 
-            ball.setFirstMove(false);
         }
 
+    }
+
+    private static boolean hitBrick(Ball ball, Brick[] bricks) {
+
+        Position ballPosition = ball.getPosition();
+
+        for(int i = 0; i < bricks.length; i++) {
+
+            if(bricks[i] == null) {
+                System.out.println("aaa");
+            }
+
+            if (ballPosition.getY()-60 == bricks[i].getPosition().getY()) {
+                bricks[i] = null;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static int getRandom(int min, int max) {
         return (int) (Math.random() * (max - min + 1) + min);
-    }
-
-    public static Direction randomDirection(Ball ball) {
-
-        int randomFirstMove = getRandom(1,3);
-
-        if(ball.isFirstMove()) {
-
-            ball.setFirstMove(false);
-
-            switch (randomFirstMove) {
-                case 1:
-                    return Direction.UP;
-                case 2:
-                    return Direction.DIAGONAL_UP_LEFT;
-                case 3:
-                    return Direction.DIAGONAL_UP_RIGHT;
-            }
-        }
-
-        return null;
     }
 
 }

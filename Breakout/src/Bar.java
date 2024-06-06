@@ -2,16 +2,16 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public class Bar {
-    private Rectangle bar;
+    private Rectangle rectangle;
     private Position position;
 
     public Bar(Rectangle player, Position position) {
-        this.bar = player;
-        this.position = position;
+        this.rectangle = player;
+        this.position = new Position(player.getX(),player.getY());
     }
 
     public void fill() {
-        bar.fill();
+        rectangle.fill();
     }
 
 
@@ -20,15 +20,15 @@ public class Bar {
     }
 
     public void setColor(Color c) {
-        bar.setColor(c);
+        rectangle.setColor(c);
     }
     public void moveRight() {
         position.setX(position.getX()+10);
-        bar.translate(10, 0);
+        rectangle.translate(10, 0);
     }
 
     public void moveLeft() {
         position.setX(position.getX()-10);
-        bar.translate(-10, 0);
+        rectangle.translate(-10, 0);
     }
 }

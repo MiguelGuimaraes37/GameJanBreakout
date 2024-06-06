@@ -28,7 +28,20 @@ public class Position {
         this.y-=y;
     }
 
+    public void increaseX(int x) {
+        this.x+=x;
+    }
+
     public void increaseY(int y) {
         this.y+=y;
+    }
+
+    public void decreaseX(int x) {
+        this.x-=x;
+    }
+
+    public boolean equals(Position positionInput) {
+
+        return this.getY() == positionInput.getY();
     }
 }
