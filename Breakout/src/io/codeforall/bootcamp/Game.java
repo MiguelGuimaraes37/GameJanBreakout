@@ -10,9 +10,8 @@ public class Game {
     private Picture background;
     private Bar bar;
     private Ball ball;
-
     private ListLines listLines;
-
+    private int counter;
 
     public Game() throws InterruptedException {
         background = new Picture(10, 10, "Breakout/resources/images/gameImage.png");
@@ -24,14 +23,28 @@ public class Game {
         prepare();
 
         boolean gameEnd = false;
-        int counter = 0;
 
         while (!gameEnd) {
 
-            while (ballValidPosition(getDirection(counter)) && !hitBrick()) {
+            while (ballValidPosition(ball.getNextDirection()) && !hitBrick()) {
 
                 Thread.sleep(55);
+                System.out.println("Direction: " + ball.getNextDirection());
 
+                if(ball.getNextDirection() == Direction.UP) {
+                    ball.moveUp();
+                } else if (ball.getNextDirection() == Direction.DIAGONAL_DOWN_RIGHT) {
+                    ball.moveDiagonalDownRight();
+                } else if (ball.getNextDirection() == Direction.DIAGONAL_DOWN_LEFT) {
+                    ball.moveDiagonalDownLeft();
+                } else if(ball.getNextDirection() == Direction.DIAGONAL_UP_LEFT) {
+                    ball.moveDiagonalUpLeft();
+                }
+                else {
+                    ball.moveDiagonalUpRight();
+                }
+
+                /*
                 switch (getDirection(counter)) {
                     case UP:
                         ball.moveUp();
@@ -50,16 +63,9 @@ public class Game {
                         ball.moveDiagonalUpRight();
                         break;
                 }
+                 */
 
             }
-
-            counter++;
-
-            if(counter == 4) {
-                counter=0;
-            }
-
-
 
         }
 
@@ -67,20 +73,62 @@ public class Game {
 
         }
 
+        private void nextDirection(Direction previousDirection) {
+
+            switch (previousDirection) {
+                case UP:
+                     ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
+                     break;
+                case DIAGONAL_DOWN_RIGHT:
+                    ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
+                    break;
+                case DIAGONAL_DOWN_LEFT:
+                    ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
+                    break;
+                case DIAGONAL_UP_LEFT:
+                    ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
+                    break;
+                default:
+                    ball.setNextDirection(Direction.UP);
+                    break;
+            }
+
+        }
+
     private boolean ballValidPosition(Direction d) {
+
+        System.out.println(d.toString());
 
         switch (d) {
             case UP:
                 if (ball.getY() - 10 < -50) {
+                    System.out.println("Teste 1");
+                    nextDirection(Direction.UP);
                     return false;
                 }
                 break;
             case DIAGONAL_DOWN_RIGHT:
-                if(ball.getX() - 10 < -50) {
+                if(ball.getX() + 10 > 912) {
+                    System.out.println("Teste 2");
+                    nextDirection(Direction.DIAGONAL_DOWN_RIGHT);
                     return false;
                 }
                 break;
+            case DIAGONAL_DOWN_LEFT:
+                if(ball.getX() - 10 > 10) {
+                    nextDirection(Direction.DIAGONAL_DOWN_LEFT);
+                    return false;
+                }
+                break;
+            case DIAGONAL_UP_LEFT:;
+            if(ball.getX() - 10 > 10) {
+                nextDirection(Direction.DIAGONAL_UP_LEFT);
+                return false;
+            }
+            break;
         }
+
+
 
         return true;
     }
@@ -104,23 +152,6 @@ public class Game {
 
     }
 
-    public static Direction getDirection(int counter) {
-
-        switch (counter) {
-            case 0:
-                return Direction.UP;
-            case 1:
-                return Direction.DIAGONAL_DOWN_RIGHT;
-            case 2:
-                return Direction.DIAGONAL_DOWN_LEFT;
-            case 3:
-                return Direction.DIAGONAL_UP_LEFT;
-            default:
-                return Direction.DIAGONAL_UP_RIGHT;
-        }
-
-    }
-
     private boolean hitBrick() {
 
         Brick brickDestroyed;
@@ -137,6 +168,7 @@ public class Game {
                         brickDestroyed.destroyBrick();
                         deleteBrick(brickCounter, listLines.getLine(lineCounter));
                         System.out.println(ball.getX()  + " Ball");
+                        nextDirection(ball.getNextDirection());
                         return true;
 
                     }
@@ -166,7 +198,6 @@ public class Game {
     private void deleteBrick(int index, BrickLine line) {
         line.removeBrick(index);
     }
-
 
     public void prepare() {
         background.draw();

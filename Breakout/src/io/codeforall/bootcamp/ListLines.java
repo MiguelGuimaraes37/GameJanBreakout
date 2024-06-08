@@ -16,7 +16,7 @@ public class ListLines {
         lines.add(new BrickLine(50, Color.GREEN));
         lines.add(new BrickLine(115, Color.CYAN));
         lines.add(new BrickLine(180, Color.PINK));
-        lines.add(new BrickLine(245, Color.YELLOW));
+        //lines.add(new BrickLine(245, Color.YELLOW));
 
     }
 

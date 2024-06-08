@@ -6,13 +6,12 @@ import org.academiadecodigo.simplegraphics.graphics.Ellipse;
 public class Ball {
     private Ellipse ellipse;
     private Direction nextDirection;
-    private Direction lastDirection;
     private boolean firstMove;
 
 
     public Ball(Ellipse ellipse) {
         this.ellipse = ellipse;
-        this.lastDirection = Direction.UP;
+        this.nextDirection = Direction.UP;
         this.firstMove=true;
     }
 
@@ -52,13 +51,6 @@ public class Ball {
         this.nextDirection = nextDirection;
     }
 
-    public void setLastDirection(Direction lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    public Direction getLastDirection() {
-        return lastDirection;
-    }
 
     public Direction getNextDirection() {
         return nextDirection;
