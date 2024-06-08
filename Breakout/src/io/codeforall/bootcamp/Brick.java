@@ -5,18 +5,32 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public class Brick {
 
-    private Position position;
     private Rectangle rectangle;
 
-    public Brick(Position position, Rectangle rectangle, Color color) {
-        this.position = new Position(rectangle.getX(),rectangle.getY());
-        this.rectangle = rectangle;
+    public Brick(int x, int y, int width, int height, Color color) {
+        rectangle = new Rectangle(x, y, width, height);
         rectangle.setColor(color);
         rectangle.fill();
     }
 
-    public Position getPosition() {
-        return position;
+    public Brick() {
+
+    }
+
+    public void destroyBrick() {
+        rectangle.delete();
+    }
+
+    public int getX() {
+        return rectangle.getX();
+    }
+
+    public int getY() {
+        return rectangle.getY();
+    }
+
+    public int getWidth() {
+        return rectangle.getWidth();
     }
 
     public Rectangle getRectangle(){

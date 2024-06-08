@@ -5,33 +5,23 @@ import org.academiadecodigo.simplegraphics.graphics.Ellipse;
 
 public class Ball {
     private Ellipse ellipse;
-    private Position position;
     private Direction nextDirection;
     private Direction lastDirection;
     private boolean firstMove;
 
 
-    public Ball(Ellipse ellipse, Position position) {
+    public Ball(Ellipse ellipse) {
         this.ellipse = ellipse;
         this.lastDirection = Direction.UP;
         this.firstMove=true;
-        this.position = new Position(ellipse.getX(),ellipse.getY());
     }
 
-    public Ellipse getEllipse() {
-        return ellipse;
+    public int getX() {
+        return ellipse.getX();
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setEllipse(Ellipse ellipse) {
-        this.ellipse = ellipse;
+    public int getY(){
+        return ellipse.getY();
     }
 
     public void fill() {
@@ -39,31 +29,22 @@ public class Ball {
     }
 
     public void moveUp() {
-        position.decreaseY(10);
         ellipse.translate(0, -10);
     }
 
     public void moveDiagonalDownLeft() {
-        position.increaseY(10);
-        position.decreaseX(10);
         ellipse.translate(-10,10);
     }
 
     public void moveDiagonalDownRight() {
-        position.increaseY(10);
-        position.increaseX(10);
         ellipse.translate(10,10);
     }
 
     public void moveDiagonalUpRight() {
-        position.decreaseY(10);
-        position.increaseX(10);
         ellipse.translate(10,-10);
     }
 
     public void moveDiagonalUpLeft() {
-        position.decreaseY(10);
-        position.decreaseX(10);
         ellipse.translate(-10,-10);
     }
 

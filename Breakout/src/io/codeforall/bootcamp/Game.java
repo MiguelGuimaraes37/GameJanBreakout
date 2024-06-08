@@ -7,17 +7,17 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 public class Game {
 
-    private String[] directions;
-    private Brick[] bricks;
     private Picture background;
     private Bar bar;
     private Ball ball;
 
+    private ListLines listLines;
+
 
     public Game() throws InterruptedException {
         background = new Picture(10, 10, "Breakout/resources/images/gameImage.png");
-        bar = new Bar(new Rectangle(410, 800, 125, 20), new Position(410,800));
-        ball = new Ball(new Ellipse(440, 790, 35, 35), new Position(440,700));
+        bar = new Bar(new Rectangle(410, 800, 125, 20));
+        ball = new Ball(new Ellipse(440, 790, 35, 35));
     }
 
     public void start() throws InterruptedException {
@@ -28,7 +28,7 @@ public class Game {
 
         while (!gameEnd) {
 
-            while (ballValidPosition(getDirection(counter), ball.getPosition()) && !hitBrick(ball, bricks)) {
+            while (ballValidPosition(getDirection(counter)) && !hitBrick()) {
 
                 Thread.sleep(55);
 
@@ -67,16 +67,16 @@ public class Game {
 
         }
 
-    private boolean ballValidPosition(Direction d, Position p1) {
+    private boolean ballValidPosition(Direction d) {
 
         switch (d) {
             case UP:
-                if (p1.getY() - 10 < -50) {
+                if (ball.getY() - 10 < -50) {
                     return false;
                 }
                 break;
             case DIAGONAL_DOWN_RIGHT:
-                if(p1.getX() - 10 < -50) {
+                if(ball.getX() - 10 < -50) {
                     return false;
                 }
                 break;
@@ -85,16 +85,16 @@ public class Game {
         return true;
     }
 
-    public static boolean barValidPosition(Direction direction, Position position) {
+    public static boolean barValidPosition(Direction direction, Bar bar) {
 
         switch (direction) {
             case RIGHT:
-                if (position.getX() + 10 > 840) {
+                if (bar.getX() + 10 > 840) {
                     return false;
                 }
                 break;
             case LEFT:
-                if (position.getX() - 10 < 20) {
+                if (bar.getX() - 10 < 20) {
                     return false;
                 }
                 break;
@@ -121,31 +121,57 @@ public class Game {
 
     }
 
-    private boolean hitBrick(Ball ball, Brick[] bricks) {
+    private boolean hitBrick() {
 
-        Position ballPosition = ball.getPosition();
+        Brick brickDestroyed;
 
-        for(int i = 0; i < bricks.length; i++) {
+        for(int lineCounter = 0; lineCounter < listLines.getLength(); lineCounter++) {
+            for(int brickCounter = 0; brickCounter < listLines.getLine(lineCounter).getLength(); brickCounter++) {
 
-            if(bricks[i] == null) {
-                continue;
-            }
+                if(listLines.getLine(lineCounter).getBrick(brickCounter) != null) {
 
-            if (ballPosition.getY()-60 == bricks[i].getPosition().getY()) {
-                bricks[i] = null;
-                return true;
+                    if(listLines.getLine(lineCounter).getBrick(brickCounter).getY() == ball.getY()-60
+                            && checkWidth(lineCounter, brickCounter)) {
+
+                        brickDestroyed = listLines.getLine(lineCounter).getBrick(brickCounter);
+                        brickDestroyed.destroyBrick();
+                        deleteBrick(brickCounter, listLines.getLine(lineCounter));
+                        System.out.println(ball.getX()  + " Ball");
+                        return true;
+
+                    }
+                }
+
             }
         }
 
         return false;
     }
 
-    public void prepare() throws InterruptedException {
+    private boolean checkWidth(int lineCounter, int brickCounter) {
+
+        return ball.getX() > listLines.getLine(lineCounter).getBrick(brickCounter).getX()
+
+                &&
+
+                ball.getX() < (listLines.getLine(lineCounter).getBrick(brickCounter).getX()
+
+                +
+
+
+                listLines.getLine(lineCounter).getBrick(brickCounter).getWidth());
+
+    }
+
+    private void deleteBrick(int index, BrickLine line) {
+        line.removeBrick(index);
+    }
+
+
+    public void prepare() {
         background.draw();
 
-        BrickFactory factory = new BrickFactory();
-
-        bricks = factory.createBricks();
+        listLines = new ListLines();
 
         ball.setColor(new Color(255,255,255));
         ball.fill();
