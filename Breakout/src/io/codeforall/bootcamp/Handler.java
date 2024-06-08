@@ -1,3 +1,5 @@
+package io.codeforall.bootcamp;
+
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -44,13 +46,13 @@ public class Handler implements KeyboardHandler {
 
         switch (keyboardEvent.getKey()) {
             case KeyboardEvent.KEY_RIGHT:
-                if(FieldPosition.isValidPosition(Direction.RIGHT, bar.getPosition())) {
+                if(Game.barValidPosition(Direction.RIGHT, bar.getPosition())) {
                     bar.moveRight();
                 }
                 break;
 
                 case KeyboardEvent.KEY_LEFT:
-                    if(FieldPosition.isValidPosition(Direction.LEFT, bar.getPosition())) {
+                    if(Game.barValidPosition(Direction.LEFT, bar.getPosition())) {
                         bar.moveLeft();
                     }
                     break;

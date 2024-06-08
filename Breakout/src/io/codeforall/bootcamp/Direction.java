@@ -1,3 +1,5 @@
+package io.codeforall.bootcamp;
+
 public enum Direction {
     UP,
     DIAGONAL_DOWN_RIGHT,

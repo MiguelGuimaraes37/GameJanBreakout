@@ -1,3 +1,5 @@
+package io.codeforall.bootcamp;
+
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -22,8 +24,7 @@ public class BrickFactory {
         for(int i = 0; i < 21; i++) {
 
             if(i == 0) {
-                Brick b1 = new Brick(initialPosition, initialRectangle);
-                b1.getRectangle().draw();
+                Brick b1 = new Brick(initialPosition, initialRectangle, color);
                 b1.getRectangle().fill();
                 b1.getRectangle().setColor(color);
                 bricksInput[i] = b1;
@@ -42,14 +43,11 @@ public class BrickFactory {
                 x+=130;
             }
 
-            Brick b2 = new Brick(new Position(x, y), new Rectangle(x, y, 125, 60));
-            b2.getRectangle().setColor(color);
-            b2.getRectangle().draw();
-            b2.getRectangle().fill();
-            bricksInput[i] = b2;
+            bricksInput[i] = new Brick(new Position(x, y), new Rectangle(x, y, 125, 60), color);
 
         }
 
         return bricksInput;
+
     }
 }

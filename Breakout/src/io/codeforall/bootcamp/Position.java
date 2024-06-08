@@ -1,3 +1,5 @@
+package io.codeforall.bootcamp;
+
 public class Position {
 
     private int x;
