@@ -18,6 +18,21 @@ public class Game {
         ball = new Ball(new Ellipse(440, 790, 35, 35));
     }
 
+    public void prepare() {
+        background.draw();
+
+        listLines = new ListLines();
+
+        ball.setColor(new Color(255,255,255));
+        ball.fill();
+
+        bar.setColor(new Color(255, 255, 255));
+        bar.fill();
+
+        new Handler(bar, background.getWidth(), background.getHeight(), ball, background.getX());
+
+    }
+
     public void start() throws InterruptedException {
         prepare();
 
@@ -29,26 +44,22 @@ public class Game {
 
                 Thread.sleep(55);
 
-                if(ball.getNextDirection() == Direction.UP) {
+                if (ball.getNextDirection() == Direction.UP) {
                     ball.moveUp();
                 } else if (ball.getNextDirection() == Direction.DIAGONAL_DOWN_RIGHT) {
                     ball.moveDiagonalDownRight();
                 } else if (ball.getNextDirection() == Direction.DIAGONAL_DOWN_LEFT) {
                     ball.moveDiagonalDownLeft();
-                } else if(ball.getNextDirection() == Direction.DIAGONAL_UP_LEFT) {
+                } else if (ball.getNextDirection() == Direction.DIAGONAL_UP_LEFT) {
                     ball.moveDiagonalUpLeft();
-                }
-                else {
+                } else {
                     ball.moveDiagonalUpRight();
                 }
 
             }
 
 
-
-        }
-
-        System.exit(0);
+            }
 
         }
 
@@ -87,6 +98,7 @@ public class Game {
                 ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
                 break;
         }
+
     }
 
     private void nextDirectionByDownLeft(Direction currentDirection) {
@@ -122,24 +134,26 @@ public class Game {
     private boolean ballValidPosition(Direction d) throws InterruptedException {
 
         switch (d) {
+
             case UP:
                 if(hitUp()) {
                     nextDirection(Direction.UP);
                     return false;
                 }
                 break;
+
             case DIAGONAL_DOWN_RIGHT:
+
                 if(hitBall()) {
                     checkDirection(Direction.DIAGONAL_DOWN_RIGHT, true);
                     return false;
                 }
-                else {
-                    if (hitDown()) {
-                        ball.delete();
-                        Thread.sleep(50);
-                        System.exit(0);
-                        break;
-                    }
+
+                if (hitDown()) {
+                    ball.delete();
+                    Thread.sleep(50);
+                    System.exit(0);
+                    break;
                 }
 
                 if(hitRight()) {
@@ -290,19 +304,6 @@ public class Game {
         line.removeBrick(index);
     }
 
-    public void prepare() {
-        background.draw();
 
-        listLines = new ListLines();
-
-        ball.setColor(new Color(255,255,255));
-        ball.fill();
-
-        bar.setColor(new Color(255, 255, 255));
-        bar.fill();
-
-        new Handler(bar, background.getWidth(), background.getHeight(), ball, background.getX());
-
-    }
 
 }
