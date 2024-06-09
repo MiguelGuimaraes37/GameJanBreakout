@@ -15,7 +15,7 @@ public class Game {
     public Game() throws InterruptedException {
         background = new Picture(10, 10, "Breakout/resources/images/gameImage.png");
         bar = new Bar(new Rectangle(410, 800, 125, 20));
-        ball = new Ball(new Ellipse(440, 790, 35, 35));
+        ball = new Ball(new Ellipse(440, 750, 35, 35));
     }
 
     public void prepare() {
@@ -26,7 +26,7 @@ public class Game {
         ball.setColor(new Color(255,255,255));
         ball.fill();
 
-        bar.setColor(new Color(255, 255, 255));
+        bar.setColor(new Color(200, 33, 41));
         bar.fill();
 
         new Handler(bar, background.getWidth(), background.getHeight(), ball, background.getX());
@@ -63,133 +63,43 @@ public class Game {
 
         }
 
-        private void nextDirection(Direction currentDirection) {
-
-            switch (currentDirection) {
-                case UP:
-                case DIAGONAL_UP_RIGHT:
-                        ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
-                     break;
-                case DIAGONAL_DOWN_RIGHT:
-                    ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
-                    break;
-                case DIAGONAL_DOWN_LEFT:
-                    ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
-                    break;
-                case DIAGONAL_UP_LEFT:
-                    ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
-                    break;
-            }
-        }
-
-    private void nextDirectionByDownRight(Direction currentDirection) {
-
-        switch (currentDirection) {
-            case DIAGONAL_DOWN_RIGHT:
-                ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
-                break;
-            case DIAGONAL_UP_RIGHT:
-                ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
-                break;
-            case DIAGONAL_UP_LEFT:
-                ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
-                break;
-            case DIAGONAL_DOWN_LEFT:
-                ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
-                break;
-        }
-
-    }
-
-    private void nextDirectionByDownLeft(Direction currentDirection) {
-
-        switch (currentDirection) {
-            case DIAGONAL_DOWN_LEFT:
-                ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
-                break;
-            case DIAGONAL_UP_LEFT:
-                ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
-                break;
-            case DIAGONAL_UP_RIGHT:
-                ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
-            case DIAGONAL_DOWN_RIGHT:
-                ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
-        }
-    }
-
-        private void checkDirection(Direction currentDirection, boolean hitBar) {
-
-            if(currentDirection == Direction.DIAGONAL_DOWN_RIGHT && hitBar) {
-                nextDirectionByDownRight(currentDirection);
-            }
-            else if(currentDirection == Direction.DIAGONAL_DOWN_LEFT && hitBar) {
-                nextDirectionByDownLeft(currentDirection);
-            }
-            else {
-                nextDirection(currentDirection);
-            }
-        }
-
-
     private boolean ballValidPosition(Direction d) throws InterruptedException {
 
-        switch (d) {
-
-            case UP:
-                if(hitUp()) {
-                    nextDirection(Direction.UP);
-                    return false;
-                }
-                break;
-
-            case DIAGONAL_DOWN_RIGHT:
-
-                if(hitBall()) {
-                    checkDirection(Direction.DIAGONAL_DOWN_RIGHT, true);
-                    return false;
-                }
-
-                if (hitDown()) {
-                    ball.delete();
-                    Thread.sleep(50);
-                    System.exit(0);
-                    break;
-                }
-
-                if(hitRight()) {
-                    checkDirection(Direction.DIAGONAL_DOWN_RIGHT, false);
-                    return false;
-                }
-                break;
-
-            case DIAGONAL_DOWN_LEFT:
-
-                if(hitBall()) {
-                    checkDirection(Direction.DIAGONAL_DOWN_LEFT, true);
-                }
-                else {
-                    if(hitDown()) {
-                        ball.delete();
-                        Thread.sleep(50);
-                        System.exit(0);
-                    }
-                }
-                break;
-
-            case DIAGONAL_UP_LEFT:;
-                    if(hitUp() || hitLeft()) {
-                        checkDirection(Direction.DIAGONAL_UP_LEFT, false);
-                        return false;
-                    }
-                    break;
-            case DIAGONAL_UP_RIGHT:
-                if(hitUp() || hitRight()) {
-                    nextDirection(Direction.DIAGONAL_UP_RIGHT);
-                    return false;
-                }
+        if(hitRight() && (d == Direction.DIAGONAL_UP_RIGHT || d == Direction.DIAGONAL_DOWN_RIGHT)) {
+            if(d == Direction.DIAGONAL_UP_RIGHT) {
+                ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
+            }
+            else {
+                ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
+            }
+            return false;
+        } else if (hitUp() && (d == Direction.DIAGONAL_UP_RIGHT || d == Direction.DIAGONAL_UP_LEFT || d == Direction.UP)) {
+            if(d == Direction.DIAGONAL_UP_LEFT) {
+                ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
+            } else {
+                ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
+            }
+            return false;
+        } else if (hitLeft() && (d == Direction.DIAGONAL_UP_LEFT || d == Direction.DIAGONAL_DOWN_LEFT)) {
+            if(d == Direction.DIAGONAL_UP_LEFT) {
+                ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
+            }
+            else {
+                ball.setNextDirection(Direction.DIAGONAL_DOWN_RIGHT);
+            }
+            return false;
+        }else if(hitBar()  && (d == Direction.DIAGONAL_DOWN_LEFT || d == Direction.DIAGONAL_DOWN_RIGHT)) {
+            if(d == Direction.DIAGONAL_DOWN_RIGHT) {
+                ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
+            } else {
+                ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
+            }
+            return false;
+        } else if(hitDown() && (d == Direction.DIAGONAL_DOWN_LEFT || d == Direction.DIAGONAL_DOWN_RIGHT)) {
+            Thread.sleep(50);
+            ball.delete();
+            System.exit(0);
         }
-
-
 
         return true;
     }
@@ -210,29 +120,17 @@ public class Game {
        return  ball.getY() == (background.getX()+10);
     }
 
-    public boolean hitBall() {
-
-        /*
-
-        System.out.println(ball.getY() + " Ball Y");
-        System.out.println(bar.getY()  + " Bar Y");
-        System.out.println(bar.getX() + " Bar X");
-        System.out.println(ball.getX() + " Ball X");
-
-         */
+    public boolean hitBar() {
 
         return (ball.getY() == (bar.getY() - 30))
 
-                && ball.getX() >= bar.getX()
+                && ball.getX() + (ball.getWidth() / 2) >= bar.getX()
 
-                && ball.getX() <= (bar.getX() + bar.getWidth());
+                && ball.getX() + (ball.getWidth() / 2) <= (bar.getX() + bar.getWidth());
 
     }
 
     public static boolean barValidPosition(Direction direction, Bar bar, int fieldX, int fieldWidth) {
-
-        System.out.println(bar.getX() + " GetX Bar");
-        System.out.println(fieldX + " Field");
 
         switch (direction) {
             case RIGHT:
@@ -251,59 +149,8 @@ public class Game {
 
     }
 
-    private boolean hitBrick() {
-
-        Brick brickDestroyed;
-
-        for(int lineCounter = 0; lineCounter < listLines.getLength(); lineCounter++) {
-            for(int brickCounter = 0; brickCounter < listLines.getLine(lineCounter).getLength(); brickCounter++) {
-
-                    if(checkHeight(lineCounter, brickCounter) && checkWidth(lineCounter, brickCounter)) {
-
-                        brickDestroyed = listLines.getLine(lineCounter).getBrick(brickCounter);
-                        brickDestroyed.destroyBrick();
-                        deleteBrick(brickCounter, listLines.getLine(lineCounter));
-                        System.out.println(ball.getX()  + " Ball");
-                        nextDirection(ball.getNextDirection());
-                        return true;
-
-                    }
-                }
-
-            }
-
-        return false;
-    }
-
-    private boolean checkWidth(int lineCounter, int brickCounter) {
-
-        return ball.getX() > listLines.getLine(lineCounter).getBrick(brickCounter).getX()
-
-                &&
-
-                ball.getX() < (listLines.getLine(lineCounter).getBrick(brickCounter).getX()
-
-                +
-
-                listLines.getLine(lineCounter).getBrick(brickCounter).getWidth());
-
-    }
-
-    public boolean checkHeight(int lineCounter, int brickCounter) {
-
-        return ball.getX() - ball.getHeight() >= listLines.getLine(lineCounter).getBrick(brickCounter).getY()
-
-                &&
-
-                ball.getX() - ball.getHeight() <=  listLines.getLine(lineCounter).getBrick(brickCounter).getHeight() +
-
-                        listLines.getLine(lineCounter).getBrick(brickCounter).getY();
-    }
-
     private void deleteBrick(int index, BrickLine line) {
         line.removeBrick(index);
     }
-
-
 
 }
