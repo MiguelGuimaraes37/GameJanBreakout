@@ -7,8 +7,11 @@ import java.util.List;
 public class BrickLine {
 
     private List<Brick> bricks;
+    private int lineY;
 
     public BrickLine(int lineY, Color color) {
+        this.lineY = lineY;
+
 
         bricks = new ArrayList<>();
 
@@ -31,6 +34,10 @@ public class BrickLine {
 
     public BrickLine() {
 
+    }
+
+    public int getLineY() {
+        return lineY;
     }
 
     public void removeBrick(int index) {

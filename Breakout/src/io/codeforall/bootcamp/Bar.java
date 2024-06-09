@@ -1,5 +1,6 @@
 package io.codeforall.bootcamp;
 
+import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
@@ -17,6 +18,14 @@ public class Bar {
 
     public int getX() {
         return rectangle.getX();
+    }
+
+    public int getWidth() {
+        return rectangle.getWidth();
+    }
+
+    public int getY() {
+        return rectangle.getY();
     }
 
     public void setColor(Color c) {

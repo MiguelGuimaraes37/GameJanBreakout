@@ -60,6 +60,18 @@ public class Ball {
         this.firstMove = firstMove;
     }
 
+    public int getWidth() {
+        return ellipse.getWidth();
+    }
+
+    public int getHeight() {
+        return ellipse.getHeight();
+    }
+
+    public void delete() {
+        ellipse.delete();
+    }
+
     public boolean isFirstMove() {
         return firstMove;
     }

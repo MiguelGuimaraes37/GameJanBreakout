@@ -21,6 +21,11 @@ public class Brick {
         rectangle.delete();
     }
 
+    public int getHeight() {
+        return rectangle.getHeight();
+    }
+
+
     public int getX() {
         return rectangle.getX();
     }

@@ -10,16 +10,19 @@ public class Handler implements KeyboardHandler {
     public Keyboard keyboard;
     public Bar bar;
     public Ball ball;
-    public int fieldX;
-    public int fieldY;
+    public int fieldWidth;
+    public int fieldHeight;
+
+    public int backgroundX;
 
 
-    public Handler(Bar bar, int fieldX, int fieldY, Ball ball) {
+    public Handler(Bar bar, int fieldX, int fieldY, Ball ball, int backgroundX) {
         this.bar = bar;
         keyboard = new Keyboard(this);
-        this.fieldX = fieldX;
-        this.fieldY = fieldY;
+        this.fieldWidth = fieldX;
+        this.fieldHeight = fieldY;
         this.ball = ball;
+        this.backgroundX = backgroundX;
         createKeyboardEvents();
     }
 
@@ -46,13 +49,13 @@ public class Handler implements KeyboardHandler {
 
         switch (keyboardEvent.getKey()) {
             case KeyboardEvent.KEY_RIGHT:
-                if(Game.barValidPosition(Direction.RIGHT, bar)) {
+                if(Game.barValidPosition(Direction.RIGHT, bar, backgroundX, fieldWidth)) {
                     bar.moveRight();
                 }
                 break;
 
                 case KeyboardEvent.KEY_LEFT:
-                    if(Game.barValidPosition(Direction.LEFT, bar)) {
+                    if(Game.barValidPosition(Direction.LEFT, bar, backgroundX, fieldWidth)) {
                         bar.moveLeft();
                     }
                     break;
