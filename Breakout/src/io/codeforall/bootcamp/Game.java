@@ -5,17 +5,39 @@ import org.academiadecodigo.simplegraphics.graphics.Ellipse;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.io.IOException;
+
 public class Game {
 
     private Picture background;
     private Bar bar;
     private Ball ball;
     private ListLines listLines;
+    private double velocity = 40;
+
+    private Picture loseBackground;
+
+    private Picture winBackground;
+
+    private Sound backgroundSound;
+
+    private Sound destroyingBrick;
+
+    private Sound endingSound;
+
+    private Sound winningSound;
+
 
     public Game() throws InterruptedException {
         background = new Picture(10, 10, "Breakout/resources/images/gameImage.png");
-        bar = new Bar(new Rectangle(410, 800, 125, 20));
-        ball = new Ball(new Ellipse(440, 780, 35, 35));
+        bar = new Bar(new Rectangle(410, 800, 120, 20));
+        ball = new Ball(new Ellipse(440, 780, 30, 30));
+        loseBackground = new Picture(10,10,"Breakout/resources/images/Level.png");
+        winBackground = new Picture(10,10,"Breakout/resources/images/Win_Level.png");
+        backgroundSound = new Sound();
+        destroyingBrick = new Sound();
+        endingSound = new Sound();
+        winningSound = new Sound();
     }
 
     public void prepare() {
@@ -33,16 +55,19 @@ public class Game {
 
     }
 
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException, IOException {
         prepare();
 
         boolean gameEnd = false;
+
+        backgroundSound.playSound("Breakout/resources/sounds/backgroundSound.wav");
+        backgroundSound.loopSound(3);
 
         while (!gameEnd) {
 
             while (ballValidPosition(ball.getNextDirection())) {
 
-                Thread.sleep(55);
+                Thread.sleep((int) velocity);
 
                 if (ball.getNextDirection() == Direction.UP) {
                     ball.moveUp();
@@ -59,17 +84,19 @@ public class Game {
             }
 
             gameEnd = checkGameStatus();
-
             }
-
-        Thread.sleep(100);
+        backgroundSound.stopSound();
+        winBackground.draw();
+        winningSound.playSound("Breakout/resources/sounds/winningSound.wav");
+        Thread.sleep(4000);
         System.exit(0);
 
         }
 
-    private boolean ballValidPosition(Direction d) throws InterruptedException {
+    private boolean ballValidPosition(Direction d) throws InterruptedException, IOException {
 
         if (hitUp() && (d == Direction.DIAGONAL_UP_RIGHT || d == Direction.DIAGONAL_UP_LEFT || d == Direction.UP)) {
+            destroyingBrick.playSound("Breakout/resources/sounds/brickSound.wav");
             if (d == Direction.DIAGONAL_UP_LEFT) {
                 ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
             } else {
@@ -78,6 +105,7 @@ public class Game {
             return false;
         }
         else if(hitRight() && (d == Direction.DIAGONAL_UP_RIGHT || d == Direction.DIAGONAL_DOWN_RIGHT)) {
+            destroyingBrick.playSound("Breakout/resources/sounds/brickSound.wav");
             if(d == Direction.DIAGONAL_UP_RIGHT) {
                 ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
             }
@@ -87,6 +115,7 @@ public class Game {
             return false;
         }
         else if (hitLeft() && (d == Direction.DIAGONAL_UP_LEFT || d == Direction.DIAGONAL_DOWN_LEFT)) {
+            destroyingBrick.playSound("Breakout/resources/sounds/brickSound.wav");
             if(d == Direction.DIAGONAL_UP_LEFT) {
                 ball.setNextDirection(Direction.DIAGONAL_UP_RIGHT);
             }
@@ -100,10 +129,15 @@ public class Game {
             } else {
                 ball.setNextDirection(Direction.DIAGONAL_UP_LEFT);
             }
+            destroyingBrick.playSound("Breakout/resources/sounds/brickSound.wav");
             return false;
         } else if(hitDown() && (d == Direction.DIAGONAL_DOWN_LEFT || d == Direction.DIAGONAL_DOWN_RIGHT)) {
-            Thread.sleep(50);
+            backgroundSound.stopSound();
+            endingSound.playSound("Breakout/resources/sounds/endingSound.wav");
+            Thread.sleep(200);
             ball.delete();
+            loseBackground.draw();
+            Thread.sleep(5000);
             System.exit(0);
         } else if(hitDownBrick() && (d == Direction.UP || d == Direction.DIAGONAL_UP_LEFT || d == Direction.DIAGONAL_UP_RIGHT)) {
             if (d == Direction.DIAGONAL_UP_LEFT) {
@@ -265,11 +299,9 @@ public class Game {
 
     public boolean hitBar() {
 
-        return (ball.getY() == (bar.getY() - 30))
+        return (ball.getMaxY() == bar.getY() && ball.getX() >= bar.getX() && ball.getX() <= bar.getMaxX())
 
-                && ball.getX() + (ball.getWidth() / 2) >= bar.getX()
-
-                && ball.getX() + (ball.getWidth() / 2) <= (bar.getX() + bar.getWidth());
+                || ball.getMaxY() == bar.getY() && ball.getMaxX() >= bar.getX() && ball.getMaxX() <= bar.getMaxX();
 
     }
 
@@ -290,7 +322,7 @@ public class Game {
 
         switch (direction) {
             case RIGHT:
-                if (bar.getX() + bar.getWidth() > fieldWidth) {
+                if (bar.getX() + bar.getWidth() > fieldWidth - 10) {
                     return false;
                 }
                 break;
@@ -306,6 +338,8 @@ public class Game {
     }
 
     private void deleteBrick(int index, BrickLine line) {
+        velocity-=1.2;
+        destroyingBrick.playSound("Breakout/resources/sounds/brickSound.wav");
         line.removeBrick(index);
     }
 

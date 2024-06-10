@@ -20,6 +20,10 @@ public class Bar {
         return rectangle.getX();
     }
 
+    public int getMaxX() {
+        return rectangle.getWidth() + rectangle.getX();
+    }
+
     public int getWidth() {
         return rectangle.getWidth();
     }
