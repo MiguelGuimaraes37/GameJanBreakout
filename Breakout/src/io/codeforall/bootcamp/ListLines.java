@@ -14,13 +14,14 @@ public class ListLines {
         lines = new ArrayList<>();
 
         lines.add(new BrickLine(50, Color.GREEN));
-        lines.add(new BrickLine(115, Color.CYAN));
-        lines.add(new BrickLine(180, Color.PINK));
-        //lines.add(new BrickLine(245, Color.YELLOW));
+        lines.add(new BrickLine(120, Color.CYAN));
+        lines.add(new BrickLine(190, Color.PINK));
+        lines.add(new BrickLine(260, Color.LIGHT_GRAY));
 
     }
 
     public int getLength() {
+
         return lines.size();
     }
 

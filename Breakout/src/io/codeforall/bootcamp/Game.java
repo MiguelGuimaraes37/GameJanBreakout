@@ -106,7 +106,6 @@ public class Game {
             ball.delete();
             System.exit(0);
         } else if(hitDownBrick() && (d == Direction.UP || d == Direction.DIAGONAL_UP_LEFT || d == Direction.DIAGONAL_UP_RIGHT)) {
-            System.out.println("HitDownBrick");
             if (d == Direction.DIAGONAL_UP_LEFT) {
                 ball.setNextDirection(Direction.DIAGONAL_DOWN_LEFT);
             } else {
@@ -149,12 +148,9 @@ public class Game {
 
                 Brick brick = line.getBrick(brickIndex);
 
-                if(
-                        (ball.getY() + ball.getHeight() >= brick.getY() && ball.getY() + ball.getHeight() <= brick.getMaxY())
+                if(ball.getMaxY() == brick.getY() && ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()
 
-                                &&
-
-                                (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()) ) {
+                || ball.getMaxY() == brick.getY() && ball.getMaxX() <= brick.getMaxX() && ball.getMaxX() >= brick.getX()) {
 
                     brick.destroyBrick();
                     deleteBrick(brickIndex, line);
@@ -179,29 +175,10 @@ public class Game {
 
                 Brick brick = line.getBrick(brickIndex);
 
-                if(ball.getNextDirection() == Direction.DIAGONAL_DOWN_LEFT) {
-                    if(
-                            (ball.getY() + ball.getHeight() >= brick.getY() && ball.getY() + ball.getHeight() <= brick.getMaxY())
+                    if(ball.getX() == brick.getMaxX() && ball.getY() >= brick.getY() && ball.getY() <= brick.getMaxY()
 
-                                    &&
+                    || ball.getX() == brick.getMaxX() && ball.getMaxY() <= brick.getMaxY() && ball.getMaxY() >= brick.getY()) {
 
-                                    (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()) ) {
-
-                        brick.destroyBrick();
-                        deleteBrick(brickIndex, line);
-                        return true;
-
-                    }
-                }
-                else {
-                    if(
-                            (ball.getY() - ball.getHeight() <= brick.getMaxY() && ball.getY() - ball.getHeight() >= brick.getY())
-
-                                    &&
-
-                                    (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()) ) {
-
-                        System.exit(0);
                         brick.destroyBrick();
                         deleteBrick(brickIndex, line);
                         return true;
@@ -209,8 +186,6 @@ public class Game {
                     }
                 }
             }
-
-        }
 
         return false;
     }
@@ -226,13 +201,11 @@ public class Game {
                 Brick brick = line.getBrick(brickIndex);
 
 
-                if(ball.getNextDirection() == Direction.DIAGONAL_DOWN_RIGHT) {
-                    if (
-                            (ball.getY() + ball.getHeight() >= brick.getY() && ball.getY() + ball.getHeight() <= brick.getMaxY())
+                    if (ball.getMaxX() == brick.getX() && ball.getY() >= brick.getY() && ball.getY() <= brick.getMaxY()
 
-                                    &&
+                            ||
 
-                                    (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX())) {
+                            ball.getMaxX() == brick.getX() && ball.getMaxY() <= brick.getMaxY() && ball.getMaxY() >= brick.getY()) {
 
 
                         brick.destroyBrick();
@@ -240,20 +213,6 @@ public class Game {
                         return true;
 
                     }
-                } else {
-                    if (
-                            (ball.getY() - ball.getHeight() <= brick.getMaxY() && ball.getY() - ball.getHeight() >= brick.getY())
-
-                                    &&
-
-                                    (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX())) {
-
-                        brick.destroyBrick();
-                        deleteBrick(brickIndex, line);
-                        return true;
-
-                    }
-                }
 
             }
 
@@ -272,17 +231,9 @@ public class Game {
 
                 Brick brick = line.getBrick(brickIndex);
 
-                System.out.println(ball.getX() + " Ball X");
-                System.out.println(brick.getX() + " Brick X");
-                System.out.println(brick.getMaxX() + " Brick Max X");
-                System.out.println("Expression: " + (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()) + "\n");
-
-                if(
-                        (ball.getY() - ball.getHeight() <= brick.getMaxY() && ball.getY() - ball.getHeight() >= brick.getY())
-
-                                &&
-
-                        (ball.getX() >= brick.getX() && ball.getX() <= brick.getMaxX()) ) {
+                if((ball.getY() == brick.getMaxY() && ball.getX() <= brick.getMaxX() && ball.getX() >= brick.getX())
+                ||
+                        (ball.getY() == brick.getMaxY()) && ball.getMaxX() <= brick.getMaxX() && ball.getMaxX() >= brick.getX()) {
                     brick.destroyBrick();
                     deleteBrick(brickIndex, line);
                     return true;

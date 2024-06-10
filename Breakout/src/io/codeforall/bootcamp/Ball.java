@@ -54,6 +54,11 @@ public class Ball {
     public int getMaxY() {
         return ellipse.getY() + ellipse.getHeight();
     }
+
+    public int getMaxX() {
+        return ellipse.getX() + ellipse.getWidth();
+    }
+
     public Direction getNextDirection() {
         return nextDirection;
     }

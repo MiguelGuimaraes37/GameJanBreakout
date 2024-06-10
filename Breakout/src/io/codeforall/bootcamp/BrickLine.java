@@ -15,18 +15,18 @@ public class BrickLine {
 
         bricks = new ArrayList<>();
 
-        int x = 40;
-        int rectangleWidth = 125;
+        int x = 80;
+        int rectangleWidth = 130;
         int rectangleHeight = 60;
 
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < 6; i++) {
 
             if(i == 0) {
                 bricks.add(new Brick(x , lineY, rectangleWidth, rectangleHeight, color));
                 continue;
             }
 
-            x+=130;
+            x+=140;
 
             bricks.add(new Brick(x,lineY, rectangleWidth, rectangleHeight, color));
         }
