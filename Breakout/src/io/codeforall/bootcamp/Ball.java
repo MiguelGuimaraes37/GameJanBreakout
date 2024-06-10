@@ -51,7 +51,9 @@ public class Ball {
         this.nextDirection = nextDirection;
     }
 
-
+    public int getMaxY() {
+        return ellipse.getY() + ellipse.getHeight();
+    }
     public Direction getNextDirection() {
         return nextDirection;
     }

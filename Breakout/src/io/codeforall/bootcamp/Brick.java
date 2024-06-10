@@ -34,6 +34,14 @@ public class Brick {
         return rectangle.getY();
     }
 
+    public int getMaxY() {
+        return rectangle.getY() + rectangle.getHeight();
+    }
+
+    public int getMaxX() {
+        return rectangle.getX() + rectangle.getWidth();
+    }
+
     public int getWidth() {
         return rectangle.getWidth();
     }

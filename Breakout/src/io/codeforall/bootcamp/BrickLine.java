@@ -40,6 +40,10 @@ public class BrickLine {
         return lineY;
     }
 
+    public boolean itsEmpty() {
+        return bricks.isEmpty();
+    }
+
     public void removeBrick(int index) {
         bricks.remove(index);
     }

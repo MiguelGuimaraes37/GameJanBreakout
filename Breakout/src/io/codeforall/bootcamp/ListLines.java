@@ -21,7 +21,6 @@ public class ListLines {
     }
 
     public int getLength() {
-
         return lines.size();
     }
 
